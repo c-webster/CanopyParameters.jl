@@ -1,5 +1,13 @@
 module CanopyParameters
 
-# Write your package code here.
+using SpatialFileIO, DelimitedFiles, Statistics
+
+include("calc_CP.jl")
+
+export
+    calc_CP_forFSM
+
+
+
 
 end
