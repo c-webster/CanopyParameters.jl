@@ -1,11 +1,11 @@
-function calc_CP_forFSM(fname::String,pts::Matrix{Float64},outf::String,
+read_griddatafunction calc_CP_forFSM(fname::String,pts::Matrix{Float64},outf::String,
             can_local::Float64,can_stand::Float64,height_cutoff=2.0::Float64)
 
     pts_x = pts[:,1]
     pts_y = pts[:,2]
 
     # load the chm
-    chm_x, chm_y, chm_z = read_ascii(fname,true,true); #vectorized
+    chm_x, chm_y, chm_z = read_griddata(fname,true,true); #vectorized
 
     chm_b = fill(NaN,size(chm_z))
     chm_b[chm_z .< height_cutoff] .= 0
@@ -53,7 +53,7 @@ function calc_CanopyCover(fname::String,pts::Matrix{Float64},outf::String,
     pts_y = pts[:,2]
 
     # load the chm
-    chm_x, chm_y, chm_z = read_ascii(fname,true,true); #vectorized
+    chm_x, chm_y, chm_z = read_griddata(fname,true,true); #vectorized
 
     chm_b = fill(NaN,size(chm_z))
     chm_b[chm_z .< height_cutoff] .= 0
