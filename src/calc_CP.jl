@@ -46,7 +46,7 @@ function calc_CP_forFSM(fname::String,pts::Matrix{Float64},outf::String,
 end
 
 function calc_CanopyCover(fname::String,pts::Matrix{Float64},outf::String,
-                height_cutoff=2::Float64,can_local::Float64,can_stand::Float64)
+                can_local::Float64,can_stand::Float64,height_cutoff=2::Float64)
 
 
     pts_x = pts[:,1]
