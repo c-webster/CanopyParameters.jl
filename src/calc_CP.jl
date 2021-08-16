@@ -1,3 +1,39 @@
+function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Vector{Float64},
+                            pts_x::Vector{Float64},pts_y::Vector{Float64},exdir::String,outstr::String)
+
+    height_cutoff = 3.0
+    can_local = 5.0
+    can_stand = 50.0
+
+    # create the output files
+    cc5,cc50,mCH5,mCH50, dataset = createfiles_calcCP(exdir,outstr,hcat(pts_x,pts_y))
+
+    chm_b = fill(NaN,size(chm_z))
+    chm_b[chm_z .< height_cutoff] .= 0
+    chm_b[chm_z .>= height_cutoff] .= 1
+
+    chm_bool = Bool.(chm_b)
+
+    for px in eachindex(pts_x)
+
+        dist = hypot.(chm_x.-pts_x[px],chm_y.-pts_y[px])
+
+        dx_local = dist .< can_local
+        dx_stand = dist .< can_stand
+
+        cc5[px]  = np.array(mean(chm_b[dx_local]))
+        cc50[px] = np.array(mean(chm_b[dx_stand]))
+
+        mCH5[px] = np.array(mean(chm_z[dx_local .& chm_bool]))
+        mCH50[px] = np.array(mean(chm_z[dx_stand .& chm_bool]))
+
+    end
+
+    dataset.close()
+
+end
+
+
 function calc_CP_forFSM(fname::String,pts::Matrix{Float64},outf::String,
             can_local::Float64,can_stand::Float64,height_cutoff=2.0::Float64)
 
@@ -44,6 +80,8 @@ function calc_CP_forFSM(fname::String,pts::Matrix{Float64},outf::String,
 
 
 end
+
+
 
 function calc_CanopyCover(fname::String,pts::Matrix{Float64},outf::String,
                 can_local::Float64,can_stand::Float64,height_cutoff=2::Float64)
