@@ -13,7 +13,9 @@ end
 include("calc_CP.jl")
 
 export
+    calc_CanopyCover,
     calc_CP_forFSM,
-    calc_CanopyCover
+    calc_CP_forOSHD,
+    createfiles_calcCP
 
 end
