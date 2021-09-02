@@ -8,7 +8,7 @@ function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Ve
     # create the output files
     cc5,cc50,mCH5,mCH50, dataset = createfiles_calcCP(exdir,outstr,hcat(pts_x,pts_y))
 
-    chm_b = fill(NaN,size(chm_z))
+    chm_b = fill(0,size(chm_z))
     chm_b[chm_z .< height_cutoff] .= 0
     chm_b[chm_z .>= height_cutoff] .= 1
 
@@ -19,13 +19,24 @@ function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Ve
         dist = hypot.(chm_x.-pts_x[px],chm_y.-pts_y[px])
 
         dx_local = dist .< can_local
+    
+        if sum(dx_local) > 0
+            cc5[px]  = np.array(mean(chm_b[dx_local]))
+            cc50[px] = np.array(mean(chm_b[dx_stand]))
+        else
+            cc5[px]  = np.array(0)
+            cc50[px] = np.array(0)
+        end
+
         dx_stand = dist .< can_stand
 
-        cc5[px]  = np.array(mean(chm_b[dx_local]))
-        cc50[px] = np.array(mean(chm_b[dx_stand]))
-
-        mCH5[px] = np.array(mean(chm_z[dx_local .& chm_bool]))
-        mCH50[px] = np.array(mean(chm_z[dx_stand .& chm_bool]))
+        if sum(dx_stand) > 0
+            mCH5[px] = np.array(mean(chm_z[dx_local .& chm_bool]))
+            mCH50[px] = np.array(mean(chm_z[dx_stand .& chm_bool]))
+        else
+            mCH5[px] = np.array(0)
+            mCH50[px] = np.array(0)
+        end
 
     end
 
