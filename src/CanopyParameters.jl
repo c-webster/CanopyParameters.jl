@@ -1,14 +1,6 @@
 module CanopyParameters
 
-using SpatialFileIO, DelimitedFiles, Statistics
-
-using Conda, PyCall
-
-function __init__()
-    @eval global netcdf    = pyimport("netCDF4")
-    @eval global np        = pyimport("numpy")
-end
-
+using SpatialFileIO, DelimitedFiles, Statistics, NCDatasets
 
 include("calc_CP.jl")
 include("fileIO.jl")

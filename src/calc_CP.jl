@@ -19,28 +19,28 @@ function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Ve
         dist = hypot.(chm_x.-pts_x[px],chm_y.-pts_y[px])
 
         dx_local = dist .< can_local
-    
+
         if sum(dx_local) > 0
-            cc5[px]  = np.array(mean(chm_b[dx_local]))
-            cc50[px] = np.array(mean(chm_b[dx_stand]))
+            cc5[px]  = Int.(round.(mean(chm_b[dx_local]).*100))
+            mCH5[px] = Int.(round.(mean(chm_z[dx_local .& chm_bool]).*100))
         else
-            cc5[px]  = np.array(0)
-            cc50[px] = np.array(0)
+            cc5[px]  = 0
+            mCH5[px] = 0
         end
 
         dx_stand = dist .< can_stand
 
         if sum(dx_stand) > 0
-            mCH5[px] = np.array(mean(chm_z[dx_local .& chm_bool]))
-            mCH50[px] = np.array(mean(chm_z[dx_stand .& chm_bool]))
+            cc50[px] = Int.(round.(mean(chm_b[dx_stand]).*100))
+            mCH50[px] = Int.(round.(mean(chm_z[dx_stand .& chm_bool]).*100))
         else
-            mCH5[px] = np.array(0)
-            mCH50[px] = np.array(0)
+            cc50[px] = 0
+            mCH5[px] = 0
         end
 
     end
 
-    dataset.close()
+    close(dataset)
 
 end
 
