@@ -20,7 +20,7 @@ function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Ve
 
         dx_local = dist .< can_local
 
-        if sum(dx_local) > 0
+        if sum(dx_local) > 0 && !isempty(chm_z[dx_local .& chm_bool])
             cc5[px]  = Int.(round.(mean(chm_b[dx_local]).*100))
             mCH5[px] = Int.(round.(mean(chm_z[dx_local .& chm_bool]).*100))
         else
@@ -30,7 +30,7 @@ function calc_CP_forOSHD(chm_x::Vector{Float64},chm_y::Vector{Float64},chm_z::Ve
 
         dx_stand = dist .< can_stand
 
-        if sum(dx_stand) > 0
+        if sum(dx_stand) > 0 && !isempty(chm_z[dx_stand .& chm_bool])
             cc50[px] = Int.(round.(mean(chm_b[dx_stand]).*100))
             mCH50[px] = Int.(round.(mean(chm_z[dx_stand .& chm_bool]).*100))
         else
